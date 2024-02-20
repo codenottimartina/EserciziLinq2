@@ -1,5 +1,8 @@
 ﻿//1-Select all students, not duplicated  (starting from enrollments list).
 
+using System.Diagnostics;
+using System.Xml.Linq;
+
 var courses = new List<Course>
 {
     new Course { CourseId = 101, CourseName = "Mathematics", Credits = 3 },
@@ -33,47 +36,46 @@ var enrollments = new List<Enrollment>
     new Enrollment { EnrollmentId = 1, Student = students[0], Course = courses[0], Grade = 55 },
     new Enrollment { EnrollmentId = 2, Student = students[0], Course = courses[1], Grade = 90 },
     new Enrollment { EnrollmentId = 3, Student = students[0], Course = courses[2], Grade = null },
+    new Enrollment { EnrollmentId = 25, Student = students[0], Course = courses[3], Grade = 44 },
 
     // Bob's enrollments
     new Enrollment { EnrollmentId = 4, Student = students[1], Course = courses[3], Grade = 88 },
     new Enrollment { EnrollmentId = 5, Student = students[1], Course = courses[4], Grade = 78 },
     new Enrollment { EnrollmentId = 6, Student = students[1], Course = courses[5], Grade = 85 },
+    new Enrollment { EnrollmentId = 24, Student = students[1], Course = courses[0], Grade = 54 },
 
     // Charlie's enrollments
     new Enrollment { EnrollmentId = 7, Student = students[2], Course = courses[6], Grade = 92 },
     new Enrollment { EnrollmentId = 8, Student = students[2], Course = courses[7], Grade = 80 },
     new Enrollment { EnrollmentId = 9, Student = students[2], Course = courses[0], Grade = 60 },
+    new Enrollment { EnrollmentId = 23, Student = students[2], Course = courses[7], Grade = 93 },
+    new Enrollment { EnrollmentId = 9, Student = students[2], Course = courses[8], Grade = 90 },
+    new Enrollment { EnrollmentId = 9, Student = students[2], Course = courses[9], Grade = 95 },
 
-    // More enrollments for other students
     // Diana
     new Enrollment { EnrollmentId = 10, Student = students[3], Course = courses[1], Grade = 82 },
     new Enrollment { EnrollmentId = 11, Student = students[3], Course = courses[2], Grade = 91 },
+    new Enrollment { EnrollmentId = 22, Student = students[3], Course = courses[6], Grade = 88 },
+    new Enrollment { EnrollmentId = 30, Student = students[3], Course = courses[7], Grade = null },
     // Evan
     new Enrollment { EnrollmentId = 12, Student = students[4], Course = courses[3], Grade = null },
     new Enrollment { EnrollmentId = 13, Student = students[4], Course = courses[4], Grade = 95 },
+    new Enrollment { EnrollmentId = 21, Student = students[4], Course = courses[5], Grade = 72 },
+    new Enrollment { EnrollmentId = 26, Student = students[4], Course = courses[2], Grade = 91 },
     // Fiona
     new Enrollment { EnrollmentId = 14, Student = students[5], Course = courses[5], Grade = 55 },
     new Enrollment { EnrollmentId = 15, Student = students[5], Course = courses[6], Grade = null },
+    new Enrollment { EnrollmentId = 20, Student = students[5], Course = courses[3], Grade = 90 },
+    new Enrollment { EnrollmentId = 27, Student = students[5], Course = courses[1], Grade = 78 },
     // George
+    new Enrollment { EnrollmentId = 28, Student = students[6], Course = courses[4], Grade = 85 },
     new Enrollment { EnrollmentId = 16, Student = students[6], Course = courses[7], Grade = 89 },
     new Enrollment { EnrollmentId = 17, Student = students[6], Course = courses[0], Grade = 94 },
     // Hannah
     new Enrollment { EnrollmentId = 18, Student = students[7], Course = courses[1], Grade = null },
     new Enrollment { EnrollmentId = 19, Student = students[7], Course = courses[2], Grade = null },
-    // Additional enrollments to reach 30
-    new Enrollment { EnrollmentId = 20, Student = students[5], Course = courses[3], Grade = 90 },
-    new Enrollment { EnrollmentId = 21, Student = students[4], Course = courses[5], Grade = 72 },
-    new Enrollment { EnrollmentId = 22, Student = students[3], Course = courses[6], Grade = 88 },
-    new Enrollment { EnrollmentId = 23, Student = students[2], Course = courses[7], Grade = 93 },
-    new Enrollment { EnrollmentId = 24, Student = students[1], Course = courses[0], Grade = 54 },
-    new Enrollment { EnrollmentId = 25, Student = students[0], Course = courses[3], Grade = 44 },
-    new Enrollment { EnrollmentId = 26, Student = students[4], Course = courses[2], Grade = 91 },
-    new Enrollment { EnrollmentId = 27, Student = students[5], Course = courses[1], Grade = 78 },
-    new Enrollment { EnrollmentId = 28, Student = students[6], Course = courses[4], Grade = 85 },
     new Enrollment { EnrollmentId = 29, Student = students[7], Course = courses[5], Grade = null },
-    new Enrollment { EnrollmentId = 30, Student = students[3], Course = courses[7], Grade = null },
-    new Enrollment { EnrollmentId = 9, Student = students[2], Course = courses[8], Grade = 90 },
-    new Enrollment { EnrollmentId = 9, Student = students[2], Course = courses[9], Grade = 95 },
+    // Additional enrollments to reach 30
 };
 
 // Assign Enrollments to Students
@@ -162,11 +164,56 @@ var groupCoursesByCredit3 =
 //}
 
 //6-Find courses with no enrollments.
-var coursesWithNoEnrollements =
-    courses
-    .Except(enrollments.Select(e => e.Course));
+var courses1 = new List<Course>()
+{
+    new Course
+    {
+        CourseId = 15,
+        CourseName = "Economy",
+        Credits = 7,
+    },
+    new Course
+    {
+        CourseId = 16,
+        CourseName = "Law",
+        Credits = 7,
+    },
+    new Course
+    {
+        CourseId = 17,
+        CourseName = "Philosophy",
+        Credits = 3,
+    },
+    new Course
+    {
+        CourseId = 18,
+        CourseName = "History",
+        Credits = 3,
+    },
+};
 
-//foreach(var course in coursesWithNoEnrollements)
+var enrollments1 = new List<Enrollment>()
+{
+    new Enrollment
+    {
+        EnrollmentId = 1,
+        Student = students[0],
+        Course = courses1[0],
+        Grade = 55,
+    },
+    new Enrollment
+    {
+        EnrollmentId = 2,
+        Student = students[1],
+        Course = courses1[1],
+        Grade = 95,
+    }
+};
+var coursesWithNoEnrollements =
+    courses1
+    .Except(enrollments1.Select(e => e.Course));
+
+//foreach (var course in coursesWithNoEnrollements)
 //{
 //    Console.WriteLine(course.ToString());
 //}
@@ -174,7 +221,7 @@ var coursesWithNoEnrollements =
 
 //7-Select enrollments with grades above 90 (starting from enrollment list and then from student list)
 var enrollementsWithGradesAbove90 =
-    enrollments
+    enrollments1
     .Where(e => e.Grade > 90)
     .OrderBy(e => e.EnrollmentId);
 
@@ -184,7 +231,7 @@ var enrollementsWithGradesAbove902 =
     .Where(e => e.Grade > 90)
     .OrderBy (e => e.EnrollmentId);
 
-//foreach (var enrollment in enrollementsWithGradesAbove902)
+//foreach (var enrollment in enrollementsWithGradesAbove90)
 //{
 //    Console.WriteLine(enrollment.ToString());
 //}
@@ -192,19 +239,39 @@ var enrollementsWithGradesAbove902 =
 
 //8-Select students enrolled in a specific course (e.g., Mathematics).
 var studentsEnrolledInACourse =
-    enrollments
+    enrollments1
     .GroupBy(e => e.Course.CourseId)
     .OrderBy(e => e.Key);
 
+var studentsEnrolledInACourse2 =
+    enrollments
+    .GroupBy(e => e.Course)
+    .Select(g => new
+    {
+       Course = g.Key,
+       Student = g.Select(e => e.Student).ToList(),
+    });
+
+
 //foreach (var group in studentsEnrolledInACourse)
 //{
-//    group.OrderBy(e => e.EnrollmentId);
-//    Console.WriteLine("\nStudenti iscritti al corso di: " + group.Key + "\n");
+//    Console.WriteLine("\nStudenti iscritti al corso id: " + group.Key + "\n");
 //    foreach (var student in group)
 //    {
 //        Console.WriteLine(student.ToString());
 //    }
 //}
+
+//foreach(var course in studentsEnrolledInACourse2)
+//{
+//    Console.WriteLine("\n" + course.Course.ToString() + "\nStudents:\n");
+//    foreach (var student in course.Student)
+//    {
+//        Console.WriteLine("Id: " + student.StudentId + " Name: " + student.Name);
+
+//    }
+//}
+
 
 //9-Group students by the number of courses they've completed.
 var groupStudentsByNumberCoursesCompleted =
@@ -227,7 +294,7 @@ var studentsCompletedAllTheirCourses =
     students
     .Where(s => s.Enrollments.Count == s.Enrollments.Count(e => e.Grade != null));
 
-//foreach(var student in studentsCompletedAllTheirCourses)
+//foreach (var student in studentsCompletedAllTheirCourses)
 //{
 //    Console.WriteLine(student.ToString());
 //}
@@ -260,10 +327,10 @@ var coursesWithHighestAverageGrade =
     })
     .OrderByDescending(e => e.AverageGrade);
 
-//foreach(var average in coursesWithHighestAverageGrade)
-//{
-//    Console.WriteLine(average.Course.ToString() + " Average grade: " + average.AverageGrade);
-//}
+foreach (var average in coursesWithHighestAverageGrade)
+{
+    Console.WriteLine(average.Course.ToString() + " Average grade: " + average.AverageGrade);
+}
 
 
 //13-List students and their average grades in descending order.
@@ -393,9 +460,9 @@ public class Student
     public string ToString()
     {
         string s = "";
-        foreach (var Enrollement in Enrollments)
+        foreach (var enrollement in Enrollments)
         {
-            s += Enrollement.Course.ToString() + " Grade: " + Enrollement.Grade + "\n";
+            s += enrollement.Course.ToString() + " Grade: " + (enrollement.Grade.HasValue ? enrollement.Grade : "Failed") + "\n";
         }
         return "Id: " + StudentId + " Name: " + Name + "\nCourses:\n" + s;
     }
