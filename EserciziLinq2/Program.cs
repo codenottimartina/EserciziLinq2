@@ -337,10 +337,16 @@ foreach (var average in coursesWithHighestAverageGrade)
 var studentsAverageGrades =
     enrollments
     .GroupBy(e => e.Student)
-    .Select(g => new
-    {
-        Student = g.Key,
-        AverageGrade = g.Sum(e => e.Grade) / g.Count(),
+    .Select(g => {
+        var notNullGrades = g
+            .Where(k => k.Grade != null)
+            .ToList();
+
+        return new
+        {
+            Student = g.Key,
+            AverageGrade = notNullGrades.Sum(e => e.Grade) / notNullGrades.Count(),
+        };
     })
     .OrderByDescending(g => g.AverageGrade);
 
